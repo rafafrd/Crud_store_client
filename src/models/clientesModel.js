@@ -30,7 +30,7 @@ const clientesModel = {
     return rows;
   },
   delete: async (pId_cliente) => {
-    const sql = "DELETE FROM produtos WHERE id_cliente=?";
+    const sql = "DELETE FROM clientes WHERE id_cliente=?";
     const values = [pId_cliente];
     const [rows] = await pool.query(sql, values);
     return rows;
