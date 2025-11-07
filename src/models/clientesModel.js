@@ -14,6 +14,13 @@ const clientesModel = {
     const [rows] = await pool.query(sql, values);
     return rows;
   },
+  // desafio
+  selectByCpf: async (cpf) => {
+    const sql = "SELECT * FROM clientes WHERE cpf_cliente = ?";
+    const values = [cpf];
+    const [rows] = await pool.query(sql, values);
+    return rows;
+  },
   // Criação de clientes;
   insert: async (pNomeCliente, pCpf) => {
     const sql = "INSERT INTO clientes(nome_cliente, cpf_cliente) VALUES(?,?);";

@@ -35,17 +35,25 @@ const clientesController = {
    */ inserirCliente: async (req, res) => {
     try {
       const { nome, cpf } = req.body;
-      if (!nome || !cpf || !isNaN(nome)) {
+      if (!nome || !cpf) {
         return res
           .status(400)
           .json({ message: "Verifique os dados enviados e tente novamente" });
-      }
+      } // desafio
 
-      const resultado = await clientesModel.insert(nome, cpf); // fazer validação pra erro de inserção
+      const clienteExistente = await clientesModel.selectByCpf(cpf);
+      if (clienteExistente.length > 0) {
+        // Retorna o status 409 (Conflict)
+        return res
+          .status(409)
+          .json({ message: "Conflito: CPF já cadastrado." });
+      }
+      const resultado = await clientesModel.insert(nome, cpf);
       res
         .status(201)
         .json({ message: "Registro incluído com sucesso", data: resultado });
     } catch (error) {
+      // Se o erro for de 'UNIQUE constraint', mais amigavel
       console.error(`Erro ao executar: ${error}`);
       res.status(500).json({ message: "Ocorreu um erro no servidor" });
     }
