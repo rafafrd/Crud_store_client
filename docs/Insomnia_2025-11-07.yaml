@@ -1,0 +1,266 @@
+type: collection.insomnia.rest/5.0
+name: loja 24-10
+meta:
+  id: wrk_6f3054dfadc6449f999f27688e01f77e
+  created: 1761310846613
+  modified: 1761310846613
+  description: ""
+collection:
+  - name: produtos
+    meta:
+      id: fld_2ce320a3fdb34b3b9d93e2e353d5af31
+      created: 1761310914129
+      modified: 1762437450445
+      sortKey: -1761310914129
+      description: ""
+    children:
+      - url: http://localhost:8000/produtos
+        name: SELECT
+        meta:
+          id: req_319b015b67e54990a1a496e4148aae62
+          created: 1761310916850
+          modified: 1762429756815
+          isPrivate: false
+          description: ""
+          sortKey: -1761310916850
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/produtos
+        name: INSERT
+        meta:
+          id: req_76368b6e11214822b1f1dd6ab9312e57
+          created: 1761314764230
+          modified: 1762434021926
+          isPrivate: false
+          description: ""
+          sortKey: -1761314764230
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"descricao" : "farinha",
+            	"valor" : 1.99
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/produtos/2
+        name: Update
+        meta:
+          id: req_d4e0e1ab33fc457c89be2be887550e32
+          created: 1762429663482
+          modified: 1762433554516
+          isPrivate: false
+          description: ""
+          sortKey: -1761310916750
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"descricao": "Mango Louco"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/produtos/1
+        name: Delete
+        meta:
+          id: req_c6d5b7c6c9bf4248957b0b28adcaf8c7
+          created: 1762432782805
+          modified: 1762433551035
+          isPrivate: false
+          description: ""
+          sortKey: -1762432782805
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/produtos
+        name: Select with id
+        meta:
+          id: req_414b779a53104b55a4c8a4995b527d59
+          created: 1762433544321
+          modified: 1762434748718
+          isPrivate: false
+          description: ""
+          sortKey: -1762433544321
+        method: GET
+        parameters:
+          - id: pair_d83f56203882405c9bc8eeb96a2e4cbb
+            name: id_produto
+            value: ""
+            description: ""
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Clientes
+    meta:
+      id: fld_92ccecc6dc8a407fa05c19b455805d10
+      created: 1762437455496
+      modified: 1762438056451
+      sortKey: -1762437455496
+      description: ""
+    children:
+      - url: http://localhost:8000/clientes
+        name: SELECT
+        meta:
+          id: req_0a7380d8e7b94325beb9f084733fc6a5
+          created: 1762437459853
+          modified: 1762438054567
+          isPrivate: false
+          description: ""
+          sortKey: -1762437590478
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/clientes
+        name: INSERT
+        meta:
+          id: req_24ba17dc88564871b81e62534fd81ee0
+          created: 1762438057549
+          modified: 1762438097886
+          isPrivate: false
+          description: ""
+          sortKey: -1762438057549
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome":"Jose",
+            	"cpf":"12345678901"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/clientes/1
+        name: UPDATE
+        meta:
+          id: req_9cbbf902af3b403e8d25d2e75c66da3e
+          created: 1762512171048
+          modified: 1762512937428
+          isPrivate: false
+          description: ""
+          sortKey: -1762512171048
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "Teste da Silva"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/clientes/1
+        name: DELETE
+        meta:
+          id: req_9c54af0b45cc46c0baca10da06b4fcae
+          created: 1762513125508
+          modified: 1762513139386
+          isPrivate: false
+          description: ""
+          sortKey: -1762513125508
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.0.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_0e4f1a8d4b0855fd97e6d9445d5b0e2f2a199ad4
+    created: 1761310846621
+    modified: 1761310846621
+environments:
+  name: Base Environment
+  meta:
+    id: env_0e4f1a8d4b0855fd97e6d9445d5b0e2f2a199ad4
+    created: 1761310846618
+    modified: 1761310846618
+    isPrivate: false
