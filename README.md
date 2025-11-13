@@ -36,9 +36,7 @@ O design da API segue o padrão MVC (Model-View-Controller) para organizar o có
 └── 📁 loja
     ├── 📁 docs
     │   └── ⚙️ Insomnia_2025-11-07.yaml
-    ├── 📁 public
-    │   ├── 📁 images
-    │   └── 📁 styles
+	│ 
     ├── 📁 src
     │   ├── 📁 config
     │   │   └── 📄 db.js
