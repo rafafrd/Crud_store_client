@@ -1,6 +1,12 @@
 const { pool } = require("../config/db");
 
 const pedidoModel = {
+  selectItemById: async (pIdItem) => {
+    const sql = "SELECT id_item FROM itens_pedido WHERE id_item = ?;";
+    const values = [pIdItem];
+    const [rows] = await pool.query(sql, values);
+    return rows;
+  },
   insertPedido: async (
     pIdCliente,
     pValorTotal,
@@ -14,12 +20,12 @@ const pedidoModel = {
       await connection.beginTransaction();
       // insert 1 - pedido
       const sqlPedido =
-        "INSERT INTO pedidos (id_cliente_fk, valor, data_pedido) VALUES (?,?,?);";
+        "INSERT INTO pedidos (id_cliente_fk, valor_total, data_pedido) VALUES (?,?,?);";
       const valuesPedido = [pIdCliente, pValorTotal, pDataPedido];
       const [rowsPedido] = await connection.query(sqlPedido, valuesPedido);
       // insert 1 - itens_pedido
       const sqlItens =
-        "INSERT INTO itens_pedido(id_pedido_fk, id_produto_fk, quantidade, valor) VALUES (?,?,?,?);";
+        "INSERT INTO itens_pedido(id_pedido_fk, id_produto_fk, quantidade, valor_item) VALUES (?,?,?,?);";
       const valuesItem = [
         rowsPedido.insertId,
         pIdProduto,
@@ -27,8 +33,8 @@ const pedidoModel = {
         pValorItem,
       ];
       const [rowsItem] = await connection.query(sqlItens, valuesItem);
-      return { rowsPedido, rowsItem };
       connection.commit();
+      return { rowsPedido, rowsItem };
     } catch (error) {
       connection.rollback();
       throw error;
@@ -38,24 +44,41 @@ const pedidoModel = {
   // inserir itens posterior a criação do pedido
   insertItem: async (pIdPedido, pIdProduto, pQuantidadeItem, pValorItem) => {
     // insert 1 - pedido
-    const sqlItens =
-      "INSERT INTO itens_pedido(id_pedido_fk, id_produto_fk, quantidade, valor) VALUES (?,?,?,?);";
-    const valuesItem = [pIdPedido, pIdProduto, pQuantidadeItem, pValorItem];
-    const [rowsItem] = await pool.query(sqlItens, valuesItem);
-    let resultadoPedido;
-    if (rowsItem.insertId !== 0) {
-      [resultadoPedido] = updatePedido(pIdPedido, pQuantidadeItem, pValorItem);
-    }
-    return { rowsItem };
-  },
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      const sqlItem =
+        "INSERT INTO itens_pedido(id_pedido_fk, id_produto_fk, quantidade, valor_item) VALUES (?,?,?,?);";
+      const valuesItem = [pIdPedido, pIdProduto, pQuantidadeItem, pValorItem];
+      const [rowsItem] = await connection.query(sqlItem, valuesItem);
 
-  updatePedido: async (pIdPedido, pQuantidadeItem, pValorItem) => {
+      const sqlPedido =
+        "UPDATE pedidos SET valor_total = valor_total + (?*?) WHERE id_pedido = ?;";
+      const valuesPedido = [pQuantidadeItem, pValorItem, pIdPedido];
+      const [rowsPedido] = await connection.query(sqlPedido, valuesPedido);
+
+      connection.commit();
+      return { rowsItem, rowsPedido };
+    } catch (error) {
+      connection.rollback();
+      throw error;
+    }
+  },
+  // corrigir unidade Item
+  updateQtdItem: async (pIdItem, pQuantidade) => {
     // insert 1 - pedido
-    const sqlItens =
-      "UPDATE pedidos SET valor = valor + (?*?) WHERE id_pedido = ?;";
-    const valuesItem = [pQuantidadeItem, pValorItem, pIdPedido];
-    const [rows] = await pool.query(sqlItens, valuesItem);
-    return { rows };
+    const sql = "UPDATE itens_pedido SET quantidade = ? WHERE id_item=?;";
+    const values = [pQuantidade, pIdItem];
+    const [rows] = await pool.query(sql, values);
+    // tabela pedidos é att com a TRIGGER: trg_atualiza_valor_pedido_after_update
+    return rows;
+  },
+  deleteItem: async (pIdPedido, pIdItem) => {
+    const sql = "DELETE FROM itens_pedido WHERE id_item=? AND id_pedido_fk=?;";
+    const values = [pIdItem, pIdPedido];
+    const [rows] = await pool.query(sql, values);
+    // Tabela pedido é atualizada com a TRIGGER: trg_atualiza_valor_pedido_after_delete
+    return rows;
   },
 };
 
